@@ -8,7 +8,7 @@ export default function Airdrop() {
   const [balance, setBalance] = useState(null);
 
   async function getBalance() {
-    if (!wallet.publicKey) return;
+    if (!wallet.publicKey) returnn;
 
     const bal = await connection.getBalance(wallet.publicKey);
     setBalance(bal / 1000000000); 
