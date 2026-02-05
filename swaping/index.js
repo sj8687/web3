@@ -8,7 +8,9 @@ dotenv.config();
 
 
 const connection = new Connection('https://api.mainnet-beta.solana.com');
+
 const privateKey = process.env.PRIVATE_KEY;
+console.log(privateKey);
 
 if (!privateKey) {
     throw new Error("PRIVATE_KEY is not set");
@@ -18,7 +20,7 @@ const wallet = new Wallet(Keypair.fromSecretKey(bs58.decode(privateKey)));
 
 async function main() {
     const response = await (
-        await axios.get('https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=100000000&slippageBps=50'
+        await axios.get('https://lite-api.jup.ag/swap/v1/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=100000000&slippageBps=50'
         )
     );
     const quoteResponse = response.data;
@@ -26,27 +28,19 @@ async function main() {
 
     try {
         const { data: { swapTransaction } } = await (
-            await axios.post('https://quote-api.jup.ag/v6/swap', {
+            await axios.post('https://lite-api.jup.ag/swap/v1/swap', {
                 quoteResponse,
                 userPublicKey: wallet.publicKey.toString(),
             })
         );
 
         console.log("swapTransaction")
-        // const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
-        // var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
-        // console.log(transaction);
-
-
         const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
-
-        const transaction = VersionedTransaction.deserialize(
-            Uint8Array.from(swapTransactionBuf)
-        );
-
+        var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
         console.log(transaction);
 
 
+       
         transaction.sign([wallet.payer]);
         const latestBlockHash = await connection.getLatestBlockhash();
 
