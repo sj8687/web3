@@ -62,3 +62,116 @@ export function TokenLaunchpad() {
         <button onClick={createToken} className='btn'>Create a token</button>
     </div>
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+// import { Keypair, Transaction, SystemProgram, PublicKey } from "@solana/web3.js";
+// import { TOKEN_PROGRAM_ID, MINT_SIZE, createInitializeMint2Instruction, getMinimumBalanceForRentExemptMint, createMintToInstruction } from "@solana/spl-token";
+
+// const wallet = useWallet();
+// const { connection } = useConnection();
+
+// async function createToken() {
+//     try {
+//         const name = document.getElementById("name").value;
+//         const symbol = document.getElementById("symbol").value;
+//         const initialsupply = Number(document.getElementById("initialsupply").value);
+
+//         if (!wallet.connected) {
+//             alert("Connect your wallet first!");
+//             return;
+//         }
+
+//         // 1️⃣ Calculate rent-exempt balance
+//         const lamports = await getMinimumBalanceForRentExemptMint(connection);
+
+//         // 2️⃣ Create new Keypair for the mint
+//         const mintKeypair = Keypair.generate();
+
+//         // 3️⃣ Create transaction to create & initialize mint
+//         const transaction = new Transaction().add(
+//             SystemProgram.createAccount({
+//                 fromPubkey: wallet.publicKey,
+//                 newAccountPubkey: mintKeypair.publicKey,
+//                 space: MINT_SIZE,
+//                 lamports,
+//                 programId: TOKEN_PROGRAM_ID,
+//             }),
+//             createInitializeMint2Instruction(
+//                 mintKeypair.publicKey,
+//                 9, // decimals
+//                 wallet.publicKey, // mint authority
+//                 wallet.publicKey, // freeze authority
+//                 TOKEN_PROGRAM_ID
+//             )
+//         );
+
+//         // 4️⃣ Sign & send transaction
+//         transaction.feePayer = wallet.publicKey;
+//         const { blockhash } = await connection.getLatestBlockhash();
+//         transaction.recentBlockhash = blockhash;
+
+//         transaction.partialSign(mintKeypair); // sign with mint account
+//         const txSignature = await wallet.sendTransaction(transaction, connection);
+//         await connection.confirmTransaction(txSignature, "confirmed");
+
+//         console.log("✅ Token Mint Created:", mintKeypair.publicKey.toBase58());
+
+//         // 5️⃣ Create token account for wallet to receive tokens
+//         const tokenAccountPubkey = await (async () => {
+//             const associatedToken = await PublicKey.findProgramAddress(
+//                 [wallet.publicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mintKeypair.publicKey.toBuffer()],
+//                 new PublicKey("ATokenGPv..." /* Associated Token Program ID */)
+//             );
+//             return associatedToken[0];
+//         })();
+
+//         // 6️⃣ Mint initial supply to your wallet
+//         const mintTx = new Transaction().add(
+//             createMintToInstruction(
+//                 mintKeypair.publicKey,
+//                 tokenAccountPubkey,
+//                 wallet.publicKey,
+//                 initialsupply * 10 ** 9 // account for decimals
+//             )
+//         );
+
+//         const mintSignature = await wallet.sendTransaction(mintTx, connection);
+//         await connection.confirmTransaction(mintSignature, "confirmed");
+
+//         console.log(`✅ Minted ${initialsupply} tokens to your wallet`);
+//         alert(`Token created! Mint: ${mintKeypair.publicKey.toBase58()}`);
+//     } catch (err) {
+//         console.error("Error creating token:", err);
+//     }
+// }
