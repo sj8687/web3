@@ -25,6 +25,7 @@ app.post('/helius', async(req, res) => {
     const toAddress = VAULT;
     const amount = incomingTx.amount;
     const type = "received_native_sol";
+    
     await mintTokens(fromAddress, amount);
 
     // if (type === "received_native_sol") {
